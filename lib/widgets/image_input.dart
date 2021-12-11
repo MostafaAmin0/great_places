@@ -15,26 +15,10 @@ class ImageInput extends StatefulWidget {
 class _ImageInputState extends State<ImageInput> {
   File? _storedImage;
 
-  Future<void> _takePicture() async {
+  Future<void> _takePic(ImageSource source) async {
     final imagePicker = ImagePicker();
     final imageFile = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 600,
-    );
-    setState(() {
-      if (imageFile != null) {
-        _storedImage = File(imageFile.path);
-      }
-    });
-    final appDir = await syspaths.getApplicationDocumentsDirectory();
-    final fileName = path.basename(imageFile!.path);
-    final savedImage = await _storedImage!.copy('${appDir.path}/$fileName');
-  }
-
-  Future<void> _selectFromAlbum() async {
-    final imagePicker = ImagePicker();
-    final imageFile = await imagePicker.pickImage(
-      source: ImageSource.gallery,
+      source: source,
       maxWidth: 600,
     );
     setState(() {
@@ -74,14 +58,14 @@ class _ImageInputState extends State<ImageInput> {
         ),
         Expanded(
           child: TextButton.icon(
-            onPressed: _takePicture,
+            onPressed: () => _takePic(ImageSource.camera),
             icon: const Icon(Icons.camera),
             label: const Text('Take pic'),
           ),
         ),
         Expanded(
           child: TextButton.icon(
-            onPressed: _selectFromAlbum,
+            onPressed: () => _takePic(ImageSource.gallery),
             icon: const Icon(Icons.photo_album),
             label: const Text('Take pic'),
           ),
