@@ -19,6 +19,11 @@ class _ImageInputState extends State<ImageInput> {
       source: ImageSource.camera,
       maxWidth: 600,
     );
+    setState(() {
+      if (imageFile != null) {
+        _storedImage = File(imageFile.path);
+      }
+    });
   }
 
   Future<void> _selectFromAlbum() async {
@@ -27,6 +32,11 @@ class _ImageInputState extends State<ImageInput> {
       source: ImageSource.gallery,
       maxWidth: 600,
     );
+    setState(() {
+      if (imageFile != null) {
+        _storedImage = File(imageFile.path);
+      }
+    });
   }
 
   @override
