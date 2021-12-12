@@ -7,6 +7,7 @@ class DBHelper {
     final dbPath = await sql.getDatabasesPath();
     return sql.openDatabase(
       path.join(dbPath, 'places.db'),
+
       /// for the first time it there is not database
       onCreate: (db, version) {
         return db.execute(
@@ -21,8 +22,14 @@ class DBHelper {
     db.insert(
       table,
       data,
-      conflictAlgorithm: ConflictAlgorithm.replace,///overrride if exists
+      conflictAlgorithm: ConflictAlgorithm.replace,
+
+      ///overrride if exists
     );
   }
 
+  static Future<List<Map<String, dynamic>>> getData(String table) async {
+    final db = await DBHelper.database();
+    return db.query(table);
+  }
 }
