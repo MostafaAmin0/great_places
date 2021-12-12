@@ -21,27 +21,39 @@ class PlacesListScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<PlacesProvider>(
-        child: const Center(
-          child: Text('Got no places yet, start adding some!'),
-        ),
-        builder: (ctx, placesProvider, ch) => placesProvider.items.isEmpty
-            ? ch!
-            : ListView.builder(
-                itemCount: placesProvider.items.length,
-                itemBuilder: (ctx, i) => ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: FileImage(
-                      placesProvider.items[i].image,
+      body: FutureBuilder(
+          future: Provider.of<PlacesProvider>(
+            context,
+            listen: false,
+          ).fetchAndSetPlaces(),
+          builder: (context, placeSnapshot) {
+            return placeSnapshot.connectionState == ConnectionState.waiting
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Consumer<PlacesProvider>(
+                    child: const Center(
+                      child: Text('Got no places yet, start adding some!'),
                     ),
-                  ),
-                  title: Text(placesProvider.items[i].title),
-                  onTap: () {
-                    // Go to detail page ...
-                  },
-                ),
-              ),
-      ),
+                    builder: (ctx, placesProvider, ch) =>
+                        placesProvider.items.isEmpty
+                            ? ch!
+                            : ListView.builder(
+                                itemCount: placesProvider.items.length,
+                                itemBuilder: (ctx, i) => ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage: FileImage(
+                                      placesProvider.items[i].image,
+                                    ),
+                                  ),
+                                  title: Text(placesProvider.items[i].title),
+                                  onTap: () {
+                                    // Go to detail page ...
+                                  },
+                                ),
+                              ),
+                  );
+          }),
     );
   }
 }
