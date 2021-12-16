@@ -14,12 +14,12 @@ class _LocationInputState extends State<LocationInput> {
   String? _previewImageUrl;
 
   Future<void> _getCurrentLocation() async {
-    final loactionData = await Location().getLocation();
+    final locationData = await Location().getLocation();
     // print(loactionData.latitude);
     // print(loactionData.longitude);
     final mapUrl = LocationHelper.generateLocationPreviewImage(
-      loactionData.latitude!,
-      loactionData.longitude!,
+      locationData.latitude!,
+      locationData.longitude!,
     );
 
     setState(() {
